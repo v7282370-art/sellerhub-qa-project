@@ -1,0 +1,20 @@
+name: Telegram Notifications
+
+on:
+  workflow_run:
+    workflows: ["SellerHub QA Tests"]
+    types: [completed]
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send Telegram message on failure
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          message: |
+            ❌ Тесты упали!
+            Репозиторий: ${{ github.repository }}
+            Смотри отчет: https://github.com/${{ github.repository }}/actions

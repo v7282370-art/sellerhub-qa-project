@@ -1,40 +1,32 @@
 name: SellerHub QA Tests
 
-# Когда запускать тесты
 on:
   push:
-    branches: [ main, master ]     # когда пушишь в main
+    branches: [ main, master ]
   pull_request:
-    branches: [ main, master ]     # когда создают PR
-  schedule:
-    - cron: '0 8 * * *'           # каждый день в 8:00 утра
-  workflow_dispatch:               # можно запустить вручную кнопкой
+    branches: [ main, master ]
+  workflow_dispatch:
 
-# Что делать
 jobs:
   api-tests:
-    runs-on: ubuntu-latest         # используем виртуальную машину Linux
+    runs-on: ubuntu-latest
 
     steps:
-      # 1. Скачать код из репозитория
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # 2. Установить Java 17
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
           java-version: '17'
           distribution: 'temurin'
 
-      # 3. Запустить Maven тесты
-      - name: Run tests
-        run: mvn clean test
+      - name: Run tests with Allure
+        run: mvn clean test allure:report
 
-      # 4. Если тесты упали — показать ошибку
-      - name: Upload test results
+      - name: Upload Allure report
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: test-reports
-          path: target/surefire-reports/
+          name: allure-report
+          path: target/site/allure-maven-plugin/
