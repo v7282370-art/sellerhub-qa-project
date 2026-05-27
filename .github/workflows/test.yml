@@ -21,12 +21,5 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Run tests with Allure
-        run: mvn clean test allure:report
-
-      - name: Upload Allure report
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: allure-report
-          path: target/site/allure-maven-plugin/
+      - name: Run tests
+        run: mvn clean test
