@@ -19,6 +19,6 @@ public class FirstTest {
                 .get("https://www.google.com")
                 .getStatusCode();
 
-        assertThat(statusCode).isEqualTo(200);
+        assertThat(statusCode).isEqualTo(404);
     }
 }
